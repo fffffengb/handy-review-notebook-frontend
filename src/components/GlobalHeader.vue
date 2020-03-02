@@ -34,7 +34,7 @@ export default {
   data () {
     return {
       avatar : '/TheLittlePrince.jpg',
-      nickname : '天野远子'
+      nickname : '我真是太聪明啦'
     }
     
   },

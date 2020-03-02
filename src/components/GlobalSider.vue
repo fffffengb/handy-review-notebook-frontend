@@ -8,7 +8,7 @@
 
       <!-- 菜单栏 :style="{ background: '#00'} -->
       <div id="menu">
-          <a-menu theme="light" mode="inline" :defaultSelectedKeys="['1']" @click="clickMenu">
+          <a-menu theme="light" mode="inline" :defaultSelectedKeys="['2']" @click="clickMenu">
             <a-menu-item key="1">
               <a-icon type="user" />
               <span>一个新的笔记</span>

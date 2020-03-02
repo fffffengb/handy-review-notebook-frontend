@@ -21,8 +21,8 @@ export default {
 
 <style>
   .logo {
-    height: 64px;
-    line-height:64px;
+    height: 63px;
+    line-height:63px;
     background: rgb(255, 255, 255);
   }
 </style>

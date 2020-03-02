@@ -5,6 +5,7 @@ export const routerMap = [
     path: '/',
     name: 'root',
     component: BasicLayout,
+    redirect: '/review',
     children: [
       {
         path: '/newFile',
@@ -13,16 +14,16 @@ export const routerMap = [
         meta: { title: '新的笔记', keepAlive: false, permission: [ 'dashboard' ] }
       },
       {
-        path: '/allFile',
-        name: 'AllFile',
-        component: () => import('@/views/allFile/AllFile'),
-        meta: { title: '所有笔记', keepAlive: false, permission: [ 'dashboard' ] }
-      },
-      {
         path: '/review',
         name: 'Review',
         component: () => import('@/views/review/Review'),
         meta: { title: '复习', keepAlive: false, permission: [ 'dashboard' ] }
+      },
+      {
+        path: '/allFile',
+        name: 'AllFile',
+        component: () => import('@/views/allFile/AllFile'),
+        meta: { title: '所有笔记', keepAlive: false, permission: [ 'dashboard' ] }
       }
     ]
   }
