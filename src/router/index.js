@@ -25,6 +25,7 @@ router.beforeEach((to, from, next) => {
       console.log("根据sessionStorage验证, 不需要发送登录请求到后端");
       next()
     } else{  // 如果因为关闭了浏览器而没有找到token, 则从cookie中找账号和密码, 如果找到了就直接登录
+      console.log("没有token");
       loginFromCookie().then(data => {
         // 登录成功就放行
         // 存储登陆状态

@@ -17,7 +17,7 @@ export function request(config) {
     if (config.requireLogin === false) {
       return config
     }
-    if (isRefreshing) {  // TODO 正在刷新就先把当前请求阻塞起来
+    if (isRefreshing) {
       console.log("正在刷新");
       throw "正在刷新token"
     } else {
@@ -34,11 +34,15 @@ export function request(config) {
         // 加同步锁
         isRefreshing = true;
         // 重新获取token
-        loginFromCookie().then(data => {  // 从cookie中拿到用户名和密码并登陆成功
+        /*在这里必须return, 才能保证刷新token之后才执行当前这个因为token过期而可能失败的请求 */
+        return loginFromCookie().then(data => {  // 从cookie中拿到用户名和密码并登陆成功
           // 缓存登陆状态
           cacheLoginStatus(data.data)
           // 开锁
           isRefreshing = false
+          console.log("刷新了token");
+          config.headers["Authorization"] = data.data
+          return config
         }).catch(() => {  // cookie中的账号密码过期或损坏
           //清空同步锁和缓存的请求
           isRefreshing = false
@@ -47,7 +51,6 @@ export function request(config) {
         })
       }
     }
-    return config
   }, err => {
     console.log("request.js: 请求拦截器->请求失败 " + err)
   });

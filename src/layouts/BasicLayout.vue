@@ -11,10 +11,10 @@
       <GlobalHeader></GlobalHeader>
 
       <!-- 内容 -->
-      <a-layout-content
-        :style="{ margin: '5px', padding: '5px', background: '#FFF', minHeight: '280px' }"
-      >
-      <router-view/>
+      <a-layout-content :style="{ margin: '5px', padding: '5px', background: '#FFF', minHeight: '280px' }" >
+        <keep-alive>
+          <router-view/>
+        </keep-alive>
       </a-layout-content>
 
       <!-- 页脚 -->
@@ -62,5 +62,5 @@ import { GlobalHeader, GlobalSider } from '@/components'
   #base-layout {
     height: 100%;
   }
-  
+
 </style>

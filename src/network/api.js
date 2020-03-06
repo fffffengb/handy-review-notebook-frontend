@@ -3,7 +3,12 @@ import {request} from './request'
 import store from "@/store";
 
 
-
+export function requestAllLabel() {
+  return request({
+    url: '/data/label',
+    method: 'GET'
+  })
+}
 
 export function postNewCard(question, answer, labels) {
   return request({
