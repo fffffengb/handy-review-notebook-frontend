@@ -61,9 +61,6 @@ export function request(config) {
       throw response.data
     else // 正常返回
       return response.data
-  }, err=> {
-    console.log("request.js: 响应拦截器->有错发生了 ", err)
   });
-
   return instance(config)
 }

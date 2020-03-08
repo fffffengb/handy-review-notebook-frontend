@@ -18,7 +18,7 @@
     <div class="labelArea">
       <h1>选择合适的标签吧</h1>
       <div class="label element">
-        <template v-for=" (value, key) in tags">
+        <span v-for=" (value, key) in tags " v-bind:key="key">
           <a-checkable-tag
                   :key="key"
                   :checked="selectedTags.indexOf(value.id) > -1"
@@ -26,7 +26,7 @@
           >
             {{value.labelName}}
           </a-checkable-tag>
-        </template>
+        </span>
       </div>
     </div>
   </div>
@@ -36,53 +36,53 @@
 
   import {postNewCard, requestAllLabel} from "@/network/api";
 
-export default {
-  name: "NewFile",
-  data() {
-    return {
-      spinning: false,
-      question: "",
-      answer: "",
-      tags: {},
-      selectedTags: []
-    }
-  },
-  methods: {
-    handleChange(key, checked) {
-      const { selectedTags } = this;
-      this.selectedTags = checked ? [...selectedTags, key] : selectedTags.filter(t => t !== key);
-      this.$store.commit("changeSelectedLabels", this.selectedTags)
-      console.log(this.selectedTags);
+  export default {
+    name: "NewFile",
+    data() {
+      return {
+        spinning: false,
+        question: "",
+        answer: "",
+        tags: {},
+        selectedTags: []
+      }
     },
-    save () {
-      // 从VUEX中取到在LabelArea.vue组件中存下来的标签
-      let allSelectedLabels = this.$store.getters.getAllSelectedLabels
-      console.log(allSelectedLabels)
-      // 发送POST请求到后端
-      postNewCard(this.question, this.answer, allSelectedLabels).then(res => {
-        // 加载完成
-        this.spinning = false
-        // 添加成功提示
-        this.$message.success('添加成功啦~')
-        // 取消所有已选择的标签
-        this.selectedTags = []
-        console.log(res)
-      }).catch(err => {
-        this.$message.error('网络异常')
-        console.log(err)
+    methods: {
+      handleChange(key, checked) {
+        const { selectedTags } = this;
+        this.selectedTags = checked ? [...selectedTags, key] : selectedTags.filter(t => t !== key);
+        this.$store.commit("changeSelectedLabels", this.selectedTags)
+        console.log(this.selectedTags);
+      },
+      save () {
+        // 从VUEX中取到在LabelArea.vue组件中存下来的标签
+        let allSelectedLabels = this.$store.getters.getAllSelectedLabels
+        console.log(allSelectedLabels)
+        // 发送POST请求到后端
+        postNewCard(this.question, this.answer, allSelectedLabels).then(res => {
+          // 加载完成
+          this.spinning = false
+          // 添加成功提示
+          this.$message.success('添加成功啦~')
+          // 取消所有已选择的标签
+          this.selectedTags = []
+          console.log(res)
+        }).catch(err => {
+          this.$message.error('网络异常')
+          console.log(err)
+        })
+        // 异步显示正在加载
+        this.spinning = true
+      }
+    },
+    mounted() {
+      requestAllLabel().then(res => {
+        this.tags = res.data
+      }).catch(err =>{
+        console.log("请求所有标签时出现了错误: ", err)
       })
-      // 异步显示正在加载
-      this.spinning = true
     }
-  },
-  mounted() {
-    requestAllLabel().then(res => {
-      this.tags = res.data
-    }).catch(err =>{
-      console.log("请求所有标签时出现了错误: ", err)
-    })
   }
-}
 </script>
 
 <style scoped>
@@ -90,7 +90,7 @@ export default {
     height: 100%;
   }
   .element {
-    margin-top: 50px;
+    margin-top: 20px;
     margin-bottom: 50px;
   }
 
