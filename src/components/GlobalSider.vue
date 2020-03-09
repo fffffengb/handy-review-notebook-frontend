@@ -10,18 +10,13 @@
       <div id="menu">
           <a-menu theme="light" mode="inline" :defaultSelectedKeys="['2']" @click="clickMenu">
             <a-menu-item key="1">
-              <a-icon type="user" />
+              <a-icon type="book" />
               <span>一个新的笔记</span>
             </a-menu-item>
 
             <a-menu-item key="2">
-              <a-icon type="video-camera" />
-              <span>今天需要复习的笔记</span>
-            </a-menu-item>
-
-            <a-menu-item key="3">
-              <a-icon type="upload" />
-              <span>查看往日的笔记</span>
+              <a-icon type="read" />
+              <span>查看所有的笔记</span>
             </a-menu-item>
 
           </a-menu>
@@ -43,8 +38,6 @@ export default {
         if (key === "1") {
           path = "newFile"
         } else if (key === "2") {
-          path = "review"
-        } else if (key === "3") {
           path = "allFile"
         }
         this.$emit("clickitem", path)

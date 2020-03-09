@@ -9,7 +9,6 @@
     <a-layout>
       <!--顶部导航栏-->
       <GlobalHeader></GlobalHeader>
-
       <!-- 内容 -->
       <a-layout-content :style="{ margin: '5px', padding: '5px', background: '#FFF', minHeight: '280px' }" >
         <keep-alive>

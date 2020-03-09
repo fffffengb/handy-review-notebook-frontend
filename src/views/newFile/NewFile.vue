@@ -18,23 +18,15 @@
     <div class="labelArea">
       <h1>选择合适的标签吧</h1>
       <div class="label element">
-        <span v-for=" (value, key) in tags " v-bind:key="key">
-          <a-checkable-tag
-                  :key="key"
-                  :checked="selectedTags.indexOf(value.id) > -1"
-                  @change="(checked) => handleChange(value.id, checked)"
-          >
-            {{value.labelName}}
-          </a-checkable-tag>
-        </span>
+        <Tag @tagsChanged="changeCurTags"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-
-  import {postNewCard, requestAllLabel} from "@/network/api";
+  import { Tag } from "@/components"
+  import { postNewCard, requestAllLabel } from "@/network/api";
 
   export default {
     name: "NewFile",
@@ -43,23 +35,21 @@
         spinning: false,
         question: "",
         answer: "",
-        tags: {},
         selectedTags: []
       }
     },
+    components: {
+      Tag
+    },
     methods: {
-      handleChange(key, checked) {
-        const { selectedTags } = this;
-        this.selectedTags = checked ? [...selectedTags, key] : selectedTags.filter(t => t !== key);
-        this.$store.commit("changeSelectedLabels", this.selectedTags)
-        console.log(this.selectedTags);
+      changeCurTags(selectedTags) {
+        this.selectedTags = selectedTags
       },
       save () {
         // 从VUEX中取到在LabelArea.vue组件中存下来的标签
-        let allSelectedLabels = this.$store.getters.getAllSelectedLabels
-        console.log(allSelectedLabels)
         // 发送POST请求到后端
-        postNewCard(this.question, this.answer, allSelectedLabels).then(res => {
+        console.log(this.selectedTags)
+        postNewCard(this.question, this.answer, this.selectedTags).then(res => {
           // 加载完成
           this.spinning = false
           // 添加成功提示

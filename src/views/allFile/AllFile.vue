@@ -13,9 +13,12 @@
                 </a-tag>
               </template>
             </a-list-item-meta>
-            <p>{{moment(item.createTime).format("  YYYY-MM-DD")}}</p>
-            <a-button slot="extra" type="primary" ghost icon="heart" @click="getAnswer(index, item.id, item.question, item.answer)">查看答案</a-button>
-          </a-list-item>
+            <p>{{moment(item.createTime).format("YYYY-MM-DD")}}</p>
+            <div slot="extra">
+              <a-button type="primary" shape="circle" ghost icon="unlock" @click="getAnswer(index, item.id, item.question, item.answer)"/>
+              <a-button class="delete-button" type="primary" shape="circle" ghost :loading="deleteButtonLoading" icon="close" @click="deleteItem(index, item.id)"/>
+            </div>
+            </a-list-item>
         </a-list>
       </div>
       <div class="pagination">
@@ -28,21 +31,22 @@
         <a-range-picker
           :disabledDate="disabledDate"
           :format="dateFormat"
-          :defaultValue="defaultDate"
+          :defaultValue="selectedDate"
           size="small"
+          @change="changeCurSelectedDateRange"
         />
       </div>
       <div class="button">
         <a-button type="primary" ghost shape="circle" icon="search" @click="search"/>
       </div>
       <div class="label">
-        <Tag @tagsChanged="changeCurTags"></Tag>
+        <Tag @tagsChanged="changeCurTags"/>
       </div>
       <div class="answer">
         <a-card :title="curQuestion"  style="width: 93%">
           <a-textarea size="large" :autosize="{minRows: 5}" v-model="curAnswer"/>
           <template class="card-actions" slot="actions">
-            <a-button type="primary" ghost icon="trophy" size="large" :loading="buttonLoading" @click="save">保存</a-button>
+            <a-button type="primary" ghost icon="trophy" size="large" :loading="saveButtonLoading" @click="save">保存</a-button>
           </template>
         </a-card>
       </div>
@@ -53,38 +57,36 @@
 <script>
   import moment from "moment";
   import Tag from "@/components/Tag";
-  import { requestAllCard, updateCard } from "@/network/api";
-  // import { defaultDisplayCardDays } from "@/config/common.config" TODO 放到配置文件里
+  import { requestAllCard, updateCard, requestCardForReview, deleteCardById } from "@/network/api";
+
   export default {
     data() {
       return {
         allCards: [],
         curPageCards: [],
         loading: true,
+        deleteButtonLoading: false,
+        lastDelete: "",
         pageSize: 4,
         curPage: 1,
         total: 0,
         selectedTags: [],
         dateFormat: "YYYY-MM-DD",
-        defaultDate: [moment().subtract(1,"weeks"), moment()],
+        selectedDate: [moment().subtract(1,"weeks"), moment()],
         haveClickGetAnswer: false,
         curPageIndex: 0,
-        curId: "0",
+        curId: "",
         curQuestion: "这里是问题或提示",
         curAnswer: "这里显示答案",
-        buttonLoading: false
+        saveButtonLoading: false
       };
     },
     components: {
       Tag
     },
-    mounted() {  // 初始化时默认查询最近一周的所有卡片
-      requestAllCard(this.selectedTags, this.defaultDate[0], this.defaultDate[1]).then(res => {
-        this.total = res.data.length
-        this.allCards = res.data
-        if (this.total > this.pageSize) {
-          this.curPageCards = this.allCards.slice(0, this.pageSize)
-        }
+    mounted() {  // 初始化时默认查询今天需要复习的卡片
+      requestCardForReview().then(res => {
+        this.fillList(res)
         this.loading = false
       }).catch(err => {
         console.log("requestAllCard错了", err)
@@ -92,6 +94,15 @@
     },
     methods: {
       moment,
+      fillList(res) {
+        this.total = res.data.length
+        this.allCards = res.data
+        if (this.total > this.pageSize) {
+          this.curPageCards = this.allCards.slice(0, this.pageSize)
+        } else {
+          this.curPageCards = this.allCards
+        }
+      },
       getAnswer(curPageIndex, id, question, answer) {
         // 这样才能点击保存按钮
         this.haveClickGetAnswer = true
@@ -99,6 +110,26 @@
         this.curId = id
         this.curQuestion = question
         this.curAnswer = answer
+      },
+      deleteItem(curPageIndex, id) {
+        this.deleteButtonLoading = true
+        deleteCardById(id).then(() => {
+          // 删除当前页中的卡片
+          this.curPageCards.splice(curPageIndex, 1)
+          // 再删除所有页中的卡片
+          let curIndex = (this.curPage - 1) * this.pageSize + curPageIndex
+          this.allCards.splice(curIndex, 1)
+          // 刷新当前页
+          this.total -= 1
+          // 调整页码
+          if (curPageIndex === 0 && this.curPage !== 1) {
+            this.curPage -= 1
+          }
+          // 这个被删除的答案不能再被编辑
+          this.lastDelete = id
+          this.pageChange(this.curPage)
+          this.deleteButtonLoading = false
+        })
       },
       pageChange(current) {
         let start = (current - 1) * this.pageSize
@@ -111,27 +142,40 @@
       disabledDate(current) {
         return current > (moment().startOf("day").add(1, "day"));
       },
+      changeCurSelectedDateRange(dates) {
+        this.selectedDate = dates
+      },
       changeCurTags(selectedTags) {
         this.selectedTags = selectedTags
       },
       search() {
-        // TODO 按条件查找卡片
+        // 按条件查找卡片
+        this.loading = true
+        requestAllCard(this.selectedTags, this.selectedDate[0], this.selectedDate[1]).then(res => {
+          this.fillList(res)
+          this.loading = false
+          this.$message.success("查找成功" + this.allCards.length + "条!")
+        }).catch(err => {
+          console.log("requestAllCard错了", err)
+        })
       },
       save() {
         if (!this.haveClickGetAnswer) {
           this.$message.info("请先查看一个答案哟~")
-        }else {
-          this.buttonLoading = true
-          updateCard(this.curId, this.curQuestion, this.curAnswer,).then(res => {
-            // 先修改当前页面的内容
+        }else if(this.lastDelete === this.curId) {
+          this.$message.error("这个卡片已经被删除了T_T")
+        }else{
+          this.saveButtonLoading = true
+          updateCard(this.curId, this.curQuestion, this.curAnswer).then(res => {
+            // 先修改当前页面中的卡片
             this.curPageCards[this.curPageIndex].question = this.curQuestion
             this.curPageCards[this.curPageIndex].answer = this.curAnswer
-            // 再修改真正的内容
+            // 再修改所有页面中的卡片
             let curIndex = (this.curPage - 1) * this.pageSize + this.curPageIndex
             this.allCards[curIndex].question = this.curQuestion
             this.allCards[curIndex].answer = this.curAnswer
             console.log(res);
-            this.buttonLoading = false
+            this.saveButtonLoading = false
             this.$message.success("修改成功~")
           }).catch(err => {
             console.log(err);
@@ -166,6 +210,10 @@
   .lists {
     height: 80%;
     margin-right: 10px;
+  }
+
+  .delete-button {
+    margin: 5px
   }
 
   .pagination {

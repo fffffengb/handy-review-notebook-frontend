@@ -3,12 +3,28 @@ import {request} from './request'
 import store from "@/store";
 
 
+export function deleteCardById(cardId) {
+  let finalPath = "/data/card" + getPath([cardId])
+  console.log(finalPath);
+  return request({
+    url: finalPath,
+    method: "DELETE"
+  })
+}
+export function requestCardForReview() {
+  return request({
+    url: "data/card/review",
+    method: "GET"
+  })
+}
+
 export function requestAllCard(label, startTime, endTime) {
   let path = "/data/card"
   let params = []
-  params.push(label, startTime.format("YYYY-MM-DD"), endTime.format("YYYY-MM-DD"))
+  params.push(label)
+  if (startTime !== undefined && endTime !==undefined)
+    params.push(startTime.format("YYYY-MM-DD"), endTime.format("YYYY-MM-DD"))
   let finalUrl = path + getPath(params)
-  console.log("终极蛇皮的url: " + finalUrl)
   return request( {
     url: finalUrl,
     method: "GET"

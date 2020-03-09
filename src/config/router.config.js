@@ -4,7 +4,7 @@ export const routerMap = [
   {
     path: '/',
     name: 'root',
-    redirect: '/home/review',
+    redirect: '/home/allFile',
     meta: { title: '首页', requireLogin: false, keepAlive: false, permission: [ 'dashboard' ] }
   },
   {
@@ -17,7 +17,7 @@ export const routerMap = [
     path: '/home',
     name: 'Home',
     component: BasicLayout,
-    redirect: '/home/review',
+    redirect: '/home/allFile',
     meta: { title: '首页', requireLogin: true, keepAlive: false, permission: [ 'dashboard' ] },
     children: [
       {
@@ -25,12 +25,6 @@ export const routerMap = [
         name: 'NewFile',
         component: () => import('@/views/newFile/NewFile.vue'),
         meta: { title: '新的笔记', requireLogin: true, keepAlive: false, permission: [ 'dashboard' ] }
-      },
-      {
-        path: 'review',
-        name: 'Review',
-        component: () => import('@/views/review/Review'),
-        meta: { title: '复习', requireLogin: true, keepAlive: false, permission: [ 'dashboard' ] }
       },
       {
         path: 'allFile',
