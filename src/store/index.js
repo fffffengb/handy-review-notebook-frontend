@@ -5,21 +5,14 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    isLogin: false,
-    allSelectedLabels : []
+    isLogin: false
   },
   mutations: {
-    changeSelectedLabels(state, nowSelectedLabels) {
-      state.allSelectedLabels = nowSelectedLabels
-    },
     setLoginStatus(state, status) {
       state.isLogin = status
     }
   },
   getters: {
-    getAllSelectedLabels(state) {
-      return state.allSelectedLabels
-    },
     getLoginStatus(state) {
       return state.isLogin
     }

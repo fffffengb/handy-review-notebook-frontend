@@ -34,12 +34,13 @@ export function postNewCard(question, answer, labels) {
   })
 }
 
-export function updateCard(id, newAnswer) {
+export function updateCard(id, newQuestion, newAnswer) {
   return request({
     url: "/data/card",
     method: "PATCH",
     data: {
       "id": id,
+      "newQuestion": newQuestion,
       "newAnswer": newAnswer
     }
   })
