@@ -18,7 +18,7 @@
 
 - 在这里编辑新的卡片
 
-![avatar](/ImageInREADME/NewFile.png)
+  ![avatar](/ImageInREADME/NewFile.png)
 
 - 登陆界面还没有调整样式就先不放啦~
 
