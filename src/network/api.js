@@ -25,6 +25,7 @@ export function requestAllCard(label, startTime, endTime) {
   if (startTime !== undefined && endTime !==undefined)
     params.push(startTime.format("YYYY-MM-DD"), endTime.format("YYYY-MM-DD"))
   let finalUrl = path + getPath(params)
+  console.log(finalUrl);
   return request( {
     url: finalUrl,
     method: "GET"
@@ -80,11 +81,12 @@ export function loginFromCookie() {
   return postLogin(username, password)
 }
 
-export function cacheLoginStatus(token) {
+export function cacheLoginStatus(userData) {
   store.commit("setLoginStatus", true);  // 缓存登陆状态
   //存储认证token和认证时间
-  window.sessionStorage.setItem("token", token);
+  window.sessionStorage.setItem("token", userData.token);
   window.sessionStorage.setItem("tokenCreateTime", new Date() + "")
+  window.sessionStorage.setItem("nickname", userData.nickname)
 }
 
 function getPath(params) {

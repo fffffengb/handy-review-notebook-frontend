@@ -3,19 +3,19 @@
       <a-dropdown class="dropdown" >
         <a class="dropdown-link" href="#">
           <a-avatar class="avatar" :size="54" style="margin: 5px;" :src="avatar"/>
-          <span class="nickname">{{ nickname }}</span>
+          <span class="nickname item">{{ nickname }}</span>
         </a>
         <a-menu slot="overlay" class="user-dropdown-menu-wrapper" @click="clickMenu">
           <a-menu-item key="0">
             <router-link :to="{ name: 'center' }">
               <a-icon type="user"/>
-              <span>个人中心</span>
+              <span class="item">个人中心</span>
             </router-link>
           </a-menu-item>
           <a-menu-item key="1">
             <router-link :to="{ name: 'settings' }">
               <a-icon type="setting"/>
-              <span>设置</span>
+              <span class="item">设置</span>
             </router-link>
           </a-menu-item>
           <a-menu-divider/>
@@ -24,7 +24,7 @@
             <span>退出</span>
           </a-menu-item>
         </a-menu>
-      </a-dropdown>      
+      </a-dropdown>
   </a-layout-header>
 </template>
 
@@ -34,20 +34,25 @@ export default {
   data () {
     return {
       avatar : '/TheLittlePrince.jpg',
-      nickname : '我真是太聪明啦'
+      nickname : ''
     }
-    
+  },
+  mounted() {
+    this.nickname = window.sessionStorage.getItem("nickname")
   },
   methods: {
-    clickMenu({ key, domEvent }) {
-      console.log("点击了退出")
-      console.log({ key, domEvent })
+    clickMenu({ key }) {
+      if (key === "2") {
+        this.$store.commit("setLoginStatus", false)
+        window.sessionStorage.clear()
+        this.$router.replace("/login")
+      }
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
   .header .dropdown {
     float: right;
     color: #000;
@@ -56,5 +61,8 @@ export default {
   .header .dropdown .nickname {
     font-size: 20px;
     font-family: '仿宋';
+  }
+  .item {
+    margin-left: 10px;
   }
 </style>

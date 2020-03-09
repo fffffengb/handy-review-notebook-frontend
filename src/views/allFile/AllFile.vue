@@ -97,6 +97,7 @@
       fillList(res) {
         this.total = res.data.length
         this.allCards = res.data
+        console.log(this.allCards.length);
         if (this.total > this.pageSize) {
           this.curPageCards = this.allCards.slice(0, this.pageSize)
         } else {
@@ -155,6 +156,7 @@
           this.fillList(res)
           this.loading = false
           this.$message.success("查找成功" + this.allCards.length + "条!")
+          this.curPage = 1
         }).catch(err => {
           console.log("requestAllCard错了", err)
         })

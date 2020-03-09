@@ -35,13 +35,13 @@ export function request(config) {
         isRefreshing = true;
         // 重新获取token
         /*在这里必须return, 才能保证刷新token之后才执行当前这个因为token过期而可能失败的请求 */
-        return loginFromCookie().then(data => {  // 从cookie中拿到用户名和密码并登陆成功
+        return loginFromCookie().then(res => {  // 从cookie中拿到用户名和密码并登陆成功
           // 缓存登陆状态
-          cacheLoginStatus(data.data)
+          cacheLoginStatus(res.data)
           // 开锁
           isRefreshing = false
           console.log("刷新了token");
-          config.headers["Authorization"] = data.data
+          config.headers["Authorization"] = res.data.token
           return config
         }).catch(() => {  // cookie中的账号密码过期或损坏
           //清空同步锁和缓存的请求
