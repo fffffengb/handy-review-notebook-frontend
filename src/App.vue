@@ -1,7 +1,7 @@
 <template>
   <a-locale-provider :locale="locale">
     <div id="app">
-      <router-view/>
+      <router-view v-if="isRouterAlive"/>
     </div>
   </a-locale-provider>
 </template>
@@ -12,9 +12,23 @@
   import 'moment/locale/zh-cn';
   moment.locale('zh-cn');
   export default {
+    provide () {
+      return {
+        reload: this.reload
+      }
+    },
+    methods: {
+      reload () {
+        this.isRouterAlive = false
+        this.$nextTick(function () {
+          this.isRouterAlive = true
+        })
+      }
+    },
     data() {
       return {
         locale: zhCN,
+        isRouterAlive: true
       }
     }
   }

@@ -77,7 +77,9 @@
 
 <style scoped>
   .newFile {
-    height: 100%;
+    height: 99%;
+    margin-left: 15px;
+    margin-top: 15px;
   }
   .element {
     margin-top: 20px;
@@ -94,14 +96,14 @@
     height: 100%;
     width: 68%;
     float: left;
-    margin: 5px;
+    margin-right: 5px;
   }
 
   .newFile .labelArea {
     height: 100%;
     width: 30%;
     float: left;
-    margin: 5px;
+    margin-left: 5px;
   }
 
   .newFile .button {

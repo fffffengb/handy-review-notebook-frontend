@@ -1,12 +1,13 @@
 <template>
   <div>
-    <span v-for=" (value, key) in tags " v-bind:key="key">
+    <span v-for=" (label, key) in tags " v-bind:key="key">
     <a-checkable-tag
             :key="key"
-            :checked="selectedTags.indexOf(value.id) > -1"
-            @change="(checked) => handleChange(value.id, checked)"
+            :checked="selectedTags.indexOf(label.id) > -1"
+            @change="(checked) => handleChange(label.id, checked)"
+            style="margin-bottom: 8px"
     >
-      {{value.labelName}}
+      {{label.labelName}}
     </a-checkable-tag>
   </span>
   </div>

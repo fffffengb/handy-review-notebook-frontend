@@ -2,7 +2,7 @@
   <a-layout id="base-layout">
     <!-- 侧边栏 -->
       <div id="sider">
-        <GlobalSider @clickitem="switchview"></GlobalSider>
+        <GlobalSider @clickItem="switchview"></GlobalSider>
       </div>
 
     <!-- 主体 -->

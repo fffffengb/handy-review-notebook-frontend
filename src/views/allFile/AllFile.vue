@@ -8,7 +8,10 @@
             <a-list-item-meta>
               <b slot="title" >{{item.question}}</b>
               <template slot="description" v-for="label in item.labels">
-                <a-tag :key="label.id">
+                <a-tag v-if="label.color !== '#FFFFFF'" :key="label.id" :color="label.color">
+                  {{label.labelName}}
+                </a-tag>
+                <a-tag v-else :key="label.id">
                   {{label.labelName}}
                 </a-tag>
               </template>
@@ -16,7 +19,7 @@
             <p>{{moment(item.createTime).format("YYYY-MM-DD")}}</p>
             <div slot="extra">
               <a-button type="primary" shape="circle" ghost icon="unlock" @click="getAnswer(index, item.id, item.question, item.answer)"/>
-              <a-button class="delete-button" type="primary" shape="circle" ghost :loading="deleteButtonLoading" icon="close" @click="deleteItem(index, item.id)"/>
+              <a-button class="delete-button" type="primary" ghost shape="circle" :loading="deleteButtonLoading" icon="close" @click="deleteItem(index, item.id)"/>
             </div>
             </a-list-item>
         </a-list>
@@ -97,11 +100,10 @@
       fillList(res) {
         this.total = res.data.length
         this.allCards = res.data
-        console.log(this.allCards.length);
         if (this.total > this.pageSize) {
           this.curPageCards = this.allCards.slice(0, this.pageSize)
         } else {
-          this.curPageCards = this.allCards
+          this.curPageCards = this.allCards.slice(0)
         }
       },
       getAnswer(curPageIndex, id, question, answer) {
@@ -117,9 +119,10 @@
         deleteCardById(id).then(() => {
           // 删除当前页中的卡片
           this.curPageCards.splice(curPageIndex, 1)
-          // 再删除所有页中的卡片
+          // 删除所有页中的卡片
           let curIndex = (this.curPage - 1) * this.pageSize + curPageIndex
           this.allCards.splice(curIndex, 1)
+          // console.log(this.curPageCards.length);
           // 刷新当前页
           this.total -= 1
           // 调整页码
@@ -191,8 +194,10 @@
 
 <style scoped>
   .allFile {
-    height: 100%;
+    height: 99%;
     width: 100%;
+    margin-left: 15px;
+    margin-top: 15px;
   }
 
   .area {
@@ -229,8 +234,8 @@
 
   .button {
     position: absolute;
-    top: 130px;
-    right: 40px;
+    top: 147px;
+    right: 30px;
   }
 
   .label {

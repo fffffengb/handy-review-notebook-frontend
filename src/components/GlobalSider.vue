@@ -19,6 +19,11 @@
               <span>查看所有的笔记</span>
             </a-menu-item>
 
+            <a-menu-item key="3">
+              <a-icon type="user" />
+              <span>个人中心</span>
+            </a-menu-item>
+
           </a-menu>
       </div>
     </a-layout-sider>
@@ -39,8 +44,10 @@ export default {
           path = "newFile"
         } else if (key === "2") {
           path = "allFile"
+        } else if (key === "3") {
+          path = "profile"
         }
-        this.$emit("clickitem", path)
+        this.$emit("clickItem", path)
       }
   }
 }

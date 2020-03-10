@@ -1,16 +1,45 @@
 import cookie from "js-cookie"
-import {request} from './request'
+import { request } from './request'
 import store from "@/store";
 
 
-export function deleteCardById(cardId) {
-  let finalPath = "/data/card" + getPath([cardId])
-  console.log(finalPath);
+export function changeNickname(newNickname) {
+  return request({
+    url: "/sys/user/nickname",
+    method: "PATCH",
+    data: {
+      "nickname": newNickname
+    }
+  })
+}
+
+export function postLabel(labelName, color) {
+  return request({
+    url: "/data/label",
+    method: "POST",
+    data: {
+      "labelName": labelName,
+      "color": color
+    }
+  })
+}
+export function deleteLabelById(labelId) {
+  let finalPath = "/data/label" + getPath([labelId])
+  console.log(finalPath)
   return request({
     url: finalPath,
     method: "DELETE"
   })
 }
+
+export function deleteCardById(cardId) {
+  let finalPath = "/data/card" + getPath([cardId])
+  return request({
+    url: finalPath,
+    method: "DELETE"
+  })
+}
+
 export function requestCardForReview() {
   return request({
     url: "data/card/review",

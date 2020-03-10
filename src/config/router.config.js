@@ -31,6 +31,12 @@ export const routerMap = [
         name: 'AllFile',
         component: () => import('@/views/allFile/AllFile'),
         meta: { title: '所有笔记', requireLogin: true, keepAlive: false, permission: [ 'dashboard' ] }
+      },
+      {
+        path: 'profile',
+        name: 'Profile',
+        component: () => import('@/views/profile/Profile'),
+        meta: { title: '个人中心', requireLogin: true, keepAlive: false, permission: [ 'dashboard' ] }
       }
     ]
   }
