@@ -57,7 +57,7 @@
       <a-form :form="form" @submit="handleSubmit">
         <a-form-item>
           <a-input v-decorator="[ 'userName', { rules: [{ required: true, message: '用户名不能为空~' }] },]"
-                   placeholder="用户名: fffengb; 密码: cptbtptp"
+                   placeholder="用户名: guest; 密码: guest"
           >
             <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
           </a-input>
@@ -71,20 +71,6 @@
           </a-input>
         </a-form-item>
         <a-form-item>
-  <!--        <a-checkbox-->
-  <!--                v-decorator="[-->
-  <!--          'remember',-->
-  <!--          {-->
-  <!--            valuePropName: 'checked',-->
-  <!--            initialValue: true,-->
-  <!--          },-->
-  <!--        ]"-->
-  <!--        >-->
-  <!--          Remember me-->
-  <!--        </a-checkbox>-->
-  <!--        <a class="login-form-forgot" href="">-->
-  <!--          Forgot password-->
-  <!--        </a>-->
           <a-button type="primary" ghost html-type="submit" class="login-form-button">
             登录
           </a-button>
@@ -99,13 +85,12 @@
 
 <script>
   import { postLogin, cacheLoginStatus } from '@/network/api'
-  import cookie from 'js-cookie'
   export default {
     name: 'Login',
     data() {
       return {
-        username: "fffengb",
-        password: "cptbtptp",
+        username: "guest",
+        password: "guest",
         errPassword: false
       };
     },
@@ -117,24 +102,21 @@
         e.preventDefault();
         this.form.validateFields((err, values) => {
           if (!err) {
-            console.log(values.userName, values.password);
             postLogin(values.userName, values.password).then((res) =>{
               // 标记此用户已登录,用于路由守卫判断
               this.$store.commit("setLoginStatus", true);
               //存储认证token和获取时间
-              cacheLoginStatus(res.data)
-              cookie.set("username", this.username, {expires: 15});
-              cookie.set("password", this.password, {expires: 15});
+              cacheLoginStatus(res.data);
               this.$router.push("/home");  // 跳转到首页
             }).catch(err => {
-              this.errPassword = true
               console.log(err);
+              this.$message.info("账号或密码错误");
             })
           }
         });
       },
       register(){
-        this.$message.info("此功能暂未开放~")
+        this.$message.info("此功能暂未开放~");
       }
     },
   };

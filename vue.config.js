@@ -6,6 +6,14 @@ module.exports = {
       }
     }
   },
+  configureWebpack: (config) => {
+    // 取消console打印
+    config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true
+    // 如果是多环境打包
+    //if (process.env.NODE_ENV === 'production') {
+    //config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true
+    // }
+  },
   devServer: {
     open: process.platform === 'darwin',
     host: '127.0.0.1',
@@ -15,4 +23,4 @@ module.exports = {
     proxy: null, // 设置代理
     before: app => {}
 }
-} 
+};

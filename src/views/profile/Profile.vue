@@ -98,12 +98,12 @@
         showChangePwd: false,
         listData: [
           { title: '用户名', description: '注：修改一次昵称需要消耗6个硬币', value: "", actions: { title: '修改', callback: () => { this.showChangeNickname = true } } },
-          { title: '账户密码', description: '检测密码强度还在开发中', value: "", actions: { title: '修改', callback: () => { this.$message.info('This is a normal message') } } },
-          { title: '密保问题', description: '未设置密保问题，密保问题可有效保护账户安全', value: "", actions: { title: '设置', callback: () => { this.$message.error('This is a message of error') } } },
-          { title: '备用邮箱', description: '已绑定邮箱', value: "", actions: { title: '修改', callback: () => { this.$message.warning('This is message of warning') } } },
-          { title: '最长复习周期', description: '默认是15天', value: '15', actions: { title: '设置', callback: () => { this.$message.warning('This is message of warning') } } },
-          { title: '待复习内容排序', description: '依据日期排序', value: '降序', actions: { title: '修改', callback: () => { this.$message.warning('This is message of warning') } } },
-          { title: '主题配色', description: '当前配色', value: '矢车菊的蓝色', actions: { title: '修改', callback: () => { this.$message.warning('This is message of warning') } } },
+          { title: '账户密码', description: '检测密码强度还在开发中', value: "", actions: { title: '修改', callback: () => { this.$message.info("正在开发~") } } },
+          { title: '密保问题', description: '未设置密保问题，密保问题可有效保护账户安全', value: "", actions: { title: '设置', callback: () => { this.$message.info("正在开发~") } } },
+          { title: '备用邮箱', description: '已绑定邮箱', value: "", actions: { title: '修改', callback: () => { this.$message.info("正在开发~") } } },
+          { title: '最长复习周期', description: '默认是15天', value: '15', actions: { title: '设置', callback: () => { this.$message.info("正在开发~") } } },
+          { title: '待复习内容排序', description: '依据日期排序', value: '降序', actions: { title: '修改', callback: () => { this.$message.info("正在开发~") } } },
+          { title: '主题配色', description: '当前配色', value: '矢车菊的蓝色', actions: { title: '修改', callback: () => { this.$message.info("正在开发~") } } },
         ]
       }
     },

@@ -1,4 +1,3 @@
-import cookie from "js-cookie"
 import { request } from './request'
 import store from "@/store";
 
@@ -24,8 +23,7 @@ export function postLabel(labelName, color) {
   })
 }
 export function deleteLabelById(labelId) {
-  let finalPath = "/data/label" + getPath([labelId])
-  console.log(finalPath)
+  let finalPath = "/data/label" + getPath([labelId]);
   return request({
     url: finalPath,
     method: "DELETE"
@@ -33,7 +31,7 @@ export function deleteLabelById(labelId) {
 }
 
 export function deleteCardById(cardId) {
-  let finalPath = "/data/card" + getPath([cardId])
+  let finalPath = "/data/card" + getPath([cardId]);
   return request({
     url: finalPath,
     method: "DELETE"
@@ -48,12 +46,12 @@ export function requestCardForReview() {
 }
 
 export function requestAllCard(label, startTime, endTime) {
-  let path = "/data/card"
-  let params = []
-  params.push(label)
+  let path = "/data/card";
+  let params = [];
+  params.push(label);
   if (startTime !== undefined && endTime !==undefined)
     params.push(startTime.format("YYYY-MM-DD"), endTime.format("YYYY-MM-DD"))
-  let finalUrl = path + getPath(params)
+  let finalUrl = path + getPath(params);
   console.log(finalUrl);
   return request( {
     url: finalUrl,
@@ -104,25 +102,20 @@ export function postLogin(username, password) {
   })
 }
 
-export function loginFromCookie() {
-  const username = cookie.get("username");
-  const password = cookie.get("password");
-  return postLogin(username, password)
-}
 
 export function cacheLoginStatus(userData) {
   store.commit("setLoginStatus", true);  // 缓存登陆状态
   //存储认证token和认证时间
-  window.sessionStorage.setItem("token", userData.token);
-  window.sessionStorage.setItem("tokenCreateTime", new Date() + "")
-  window.sessionStorage.setItem("nickname", userData.nickname)
+  window.localStorage.setItem("token", userData.token);
+  window.localStorage.setItem("tokenCreateTime", new Date() + "");
+  window.localStorage.setItem("nickname", userData.nickname);
 }
 
 function getPath(params) {
-  let res = ""
+  let res = "";
   for (let i = 0; i < params.length; i++) {
     if (params[i] != null && params[i].length !== 0)
-      res += '/' + params[i]
+      res += '/' + params[i];
   }
-  return res
+  return res;
 }

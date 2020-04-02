@@ -7,16 +7,16 @@
         </a>
         <a-menu slot="overlay" class="user-dropdown-menu-wrapper" @click="clickMenu">
           <a-menu-item key="0">
-            <router-link :to="{ name: 'center' }">
+<!--            <router-link :to="{ name: 'center' }">-->
               <a-icon type="user"/>
               <span class="item">个人中心</span>
-            </router-link>
+<!--            </router-link>-->
           </a-menu-item>
           <a-menu-item key="1">
-            <router-link :to="{ name: 'settings' }">
+<!--            <router-link :to="{ name: 'settings' }">-->
               <a-icon type="setting"/>
               <span class="item">设置</span>
-            </router-link>
+<!--            </router-link>-->
           </a-menu-item>
           <a-menu-divider/>
           <a-menu-item key="2">
@@ -38,14 +38,16 @@ export default {
     }
   },
   mounted() {
-    this.nickname = window.sessionStorage.getItem("nickname")
+    this.nickname = window.localStorage.getItem("nickname");
   },
   methods: {
     clickMenu({ key }) {
+      if (key === "0" || key ==="1")
+        this.$message.info("正在开发~");
       if (key === "2") {
-        this.$store.commit("setLoginStatus", false)
-        window.sessionStorage.clear()
-        this.$router.replace("/login")
+        this.$store.commit("setLoginStatus", false);
+        window.localStorage.clear();
+        this.$router.replace("/login");
       }
     }
   }

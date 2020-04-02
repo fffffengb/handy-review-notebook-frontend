@@ -1,9 +1,9 @@
 <template>
-  <a-locale-provider :locale="locale">
+  <a-config-provider :locale="locale">
     <div id="app">
       <router-view v-if="isRouterAlive"/>
     </div>
-  </a-locale-provider>
+  </a-config-provider>
 </template>
 
 <script>

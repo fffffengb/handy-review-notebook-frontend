@@ -47,7 +47,7 @@
       </div>
       <div class="answer">
         <a-card :title="curQuestion"  style="width: 93%">
-          <a-textarea size="large" :autosize="{minRows: 5}" v-model="curAnswer"/>
+          <a-textarea size="large" :autoSize="{minRows: 5}" v-model="curAnswer"/>
           <template class="card-actions" slot="actions">
             <a-button type="primary" ghost icon="trophy" size="large" :loading="saveButtonLoading" @click="save">保存</a-button>
           </template>
@@ -89,8 +89,8 @@
     },
     mounted() {  // 初始化时默认查询今天需要复习的卡片
       requestCardForReview().then(res => {
-        this.fillList(res)
-        this.loading = false
+        this.fillList(res);
+        this.loading = false;
       }).catch(err => {
         console.log("requestAllCard错了", err)
       })
@@ -98,8 +98,8 @@
     methods: {
       moment,
       fillList(res) {
-        this.total = res.data.length
-        this.allCards = res.data
+        this.total = res.data.length;
+        this.allCards = res.data;
         if (this.total > this.pageSize) {
           this.curPageCards = this.allCards.slice(0, this.pageSize)
         } else {

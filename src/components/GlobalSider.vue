@@ -8,7 +8,7 @@
 
       <!-- 菜单栏 :style="{ background: '#00'} -->
       <div id="menu">
-          <a-menu theme="light" mode="inline" :defaultSelectedKeys="['2']" @click="clickMenu">
+          <a-menu theme="light" mode="inline" :selectedKeys="[selectedKey]" @click="clickMenu">
             <a-menu-item key="1">
               <a-icon type="book" />
               <span>一个新的笔记</span>
@@ -37,18 +37,35 @@ export default {
   components: {
     Logo
   },
+  data() {
+    return {
+      selectedKey: "2"
+    };
+  },
   methods: {
-      clickMenu({key}) {
-        let path = ""
-        if (key === "1") {
-          path = "newFile"
-        } else if (key === "2") {
-          path = "allFile"
-        } else if (key === "3") {
-          path = "profile"
-        }
-        this.$emit("clickItem", path)
+    clickMenu({key}) {
+      let path = "";
+      this.selectedKey = key;
+      if (key === "1") {
+        path = "newFile"
+      } else if (key === "2") {
+        path = "allFile"
+      } else if (key === "3") {
+        path = "profile"
       }
+      this.$emit("clickItem", path)
+      }
+  },
+  mounted() {
+    console.log(this.$route.name);
+    if (this.$route.name === "NewFile") {
+      this.selectedKey = "1";
+      console.log(this.selectedKey);
+    } else if (this.$route.name === "AllFile") {
+      this.selectedKey = "2";
+    } else {
+      this.selectedKey = "3";
+    }
   }
 }
 </script>
