@@ -1,18 +1,15 @@
 module.exports = {
+  configureWebpack: (config)=>{
+    if(process.env.NODE_ENV === 'production'){
+      config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true
+    }
+  },
   css: {
     loaderOptions: { // 向 CSS 相关的 loader 传递选项
       less: {
         javascriptEnabled: true
       }
     }
-  },
-  configureWebpack: (config) => {
-    // 取消console打印
-    config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true
-    // 如果是多环境打包
-    //if (process.env.NODE_ENV === 'production') {
-    //config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true
-    // }
   },
   devServer: {
     open: process.platform === 'darwin',
@@ -24,3 +21,4 @@ module.exports = {
     before: app => {}
 }
 };
+

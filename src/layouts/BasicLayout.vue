@@ -4,7 +4,6 @@
       <div id="sider">
         <GlobalSider @clickItem="switchview"></GlobalSider>
       </div>
-
     <!-- 主体 -->
     <a-layout>
       <!--顶部导航栏-->
@@ -15,8 +14,6 @@
           <router-view/>
         </keep-alive>
       </a-layout-content>
-
-      <!-- 页脚 -->
 
     </a-layout>
   </a-layout>
